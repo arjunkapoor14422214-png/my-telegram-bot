@@ -1,15 +1,22 @@
+import os
 import telebot
 from telebot import types
-import os
 from flask import Flask
 
-# токен бота
-BOT_TOKEN = os.getenv("BOT_TOKEN", "7859887919:AAGmfrXOcr6A1O7TJrkOvevF8toljbmq_Qg")
+# Берём токен из переменной окружения
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+if not BOT_TOKEN:
+    raise ValueError("Ошибка: переменная окружения BOT_TOKEN не задана!")
 
+# Инициализация бота
 bot = telebot.TeleBot(BOT_TOKEN)
+
+# Инициализация Flask для keep-alive на Render
 app = Flask(__name__)
 
+# Словарь для хранения выбранного языка пользователями
 user_language = {}
+
 
 LANGS = {
     "EN": "🇬🇧 English",
