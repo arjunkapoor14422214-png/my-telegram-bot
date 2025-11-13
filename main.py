@@ -141,9 +141,7 @@ def menu_handler(msg):
 def home():
     return "Bot is running!"
 
-import threading
-threading.Thread(target=lambda: bot.infinity_polling(skip_pending=True, timeout=10)).start()
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
+if __name__ == "__main__":
+    print("Бот запущен ✅")
+    bot.infinity_polling(skip_pending=True, timeout=10)
 
