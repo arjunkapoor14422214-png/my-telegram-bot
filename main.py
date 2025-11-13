@@ -3,6 +3,13 @@ import telebot
 from telebot import types
 from flask import Flask
 
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return 'Бот работает!'
+
+
 # Берём токен из переменной окружения
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 if not BOT_TOKEN:
