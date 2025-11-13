@@ -42,18 +42,18 @@ TEXTS = {
         "BN": "অনুগ্রহ করে একটি বিকল্প নির্বাচন করুন:",
     },
     "partner": {
-        "EN": "Create your account using the link:\nhttps://888starz-main.in/registration\n\nSend your email to your manager or contact the head manager.\n\nTelegram: @miles888starzz",
-        "RU": "Создайте свой аккаунт по ссылке:\nhttps://888starz-main.in/registration\n\nОтправьте вашу почту менеджеру или свяжитесь с главным менеджером.\n\nTelegram: @miles888starzz",
-        "AR": "أنشئ حسابك عبر الرابط:\nhttps://888starz-main.in/registration\n\nأرسل بريدك الإلكتروني إلى مديرك أو اتصل بالمدير الرئيسي.\n\nTelegram: @miles888starzz",
-        "HI": "इस लिंक से अपना अकाउंट बनाएं:\nhttps://888starz-main.in/registration\n\nअपना ईमेल अपने मैनेजर को भेजें या मुख्य मैनेजर से संपर्क करें।\n\nTelegram: @miles888starzz",
-        "BN": "এই লিঙ্ক দিয়ে আপনার অ্যাকাউন্ট তৈরি করুন:\nhttps://888starz-main.in/registration\n\nআপনার ইমেইল আপনার ম্যানেজারকে পাঠান অথবা প্রধান ম্যানেজারের সাথে যোগাযোগ করুন।\n\nTelegram: @miles888starzz",
+        "EN": -
+        "RU": -
+        "AR": -
+        "HI": -
+        "BN": -
     },
     "support": {
-        "EN": "Support contacts:\nTelegram: @miles888starzz\nEmail: support@example.com\nWhatsApp: +777127381239",
-        "RU": "Контакты поддержки:\nTelegram: @miles888starzz\nEmail: support@example.com\nWhatsApp: +777127381239",
-        "AR": "دعم العملاء:\nTelegram: @miles888starzz\nEmail: support@example.com\nWhatsApp: +777127381239",
-        "HI": "सपोर्ट संपर्क:\nTelegram: @miles888starzz\nEmail: support@example.com\nWhatsApp: +777127381239",
-        "BN": "সাপোর্ট যোগাযোগ:\nTelegram: @miles888starzz\nEmail: support@example.com\nWhatsApp: +777127381239",
+        "EN": 
+        "RU": 
+        "AR": 
+        "HI":
+        "BN": 
     },
     "verify": {
         "EN": "Enter manager username in format @USERNAME:",
@@ -70,15 +70,15 @@ TEXTS = {
         "BN": "✅ এটি আমাদের অফিসিয়াল ম্যানেজার।",
     },
     "invalid": {
-        "EN": "⛔ This is not our manager. Contact @Nazar_by_Couture",
-        "RU": "⛔ Это не наш менеджер. Свяжитесь с @Nazar_by_Couture",
-        "AR": "⛔ هذا ليس مديرنا. اتصل بـ @Nazar_by_Couture",
-        "HI": "⛔ यह हमारा मैनेजर नहीं है। @Nazar_by_Couture से संपर्क करें",
-        "BN": "⛔ এটি আমাদের ম্যানেজার নয়। যোগাযোগ করুন @Nazar_by_Couture",
+        "EN": "⛔ This is not our manager. Contact @",
+        "RU": "⛔ Это не наш менеджер. Свяжитесь с @",
+        "AR": "⛔ هذا ليس مديرنا. اتصل بـ @",
+        "HI": "⛔ यह हमारा मैनेजर नहीं है। @ से संपर्क करें",
+        "BN": "⛔ এটি আমাদের ম্যানেজার নয়। যোগাযোগ করুন @",
     }
 }
 
-valid_managers = ["@vladtvc", "@Nazar_by_Couture", "@miles888starzz"]
+valid_managers = ["@NAME"]
 
 def get_lang(chat_id):
     return user_language.get(chat_id, "EN")
