@@ -1,16 +1,21 @@
 import os
+import time
 import telebot
 from telebot import types
 from flask import Flask
+import telebot.apihelper
 
+# Настройки telebot: период жизни сессии (уменьшает шансы на ConnectionError)
+telebot.apihelper.SESSION_TIME_TO_LIVE = 5
+
+# Flask app (один экземпляр)
 app = Flask(__name__)
 
 @app.route('/')
 def index():
     return 'Бот работает!'
 
-
-# Берём токен из переменной окружения
+# Берём токен из переменных окружения
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 if not BOT_TOKEN:
     raise ValueError("Ошибка: переменная окружения BOT_TOKEN не задана!")
@@ -18,12 +23,8 @@ if not BOT_TOKEN:
 # Инициализация бота
 bot = telebot.TeleBot(BOT_TOKEN)
 
-# Инициализация Flask для keep-alive на Render
-app = Flask(__name__)
-
-# Словарь для хранения выбранного языка пользователями
+# Словарь для хранения выбранного языка пользователями (в памяти)
 user_language = {}
-
 
 LANGS = {
     "EN": "🇬🇧 English",
@@ -49,18 +50,18 @@ TEXTS = {
         "BN": "অনুগ্রহ করে একটি বিকল্প নির্বাচন করুন:",
     },
     "partner": {
-        "EN": -E
-        "RU": -R
-        "AR": -A
-        "HI": -H
-        "BN": -B
+        "EN": "To become a partner, follow the instructions...",
+        "RU": "Чтобы стать партнёром, следуйте инструкциям...",
+        "AR": "لتصبح شريكًا، اتبع التعليمات...",
+        "HI": "साझेदार बनने के लिए, निर्देशों का पालन करें...",
+        "BN": "পার্টনার হতে নির্দেশাবলী অনুসরণ করুন...",
     },
     "support": {
-        "EN": E
-        "RU": R
-        "AR": A
-        "HI":S
-        "BN": D
+        "EN": "Contact support: @support",
+        "RU": "Связаться с поддержкой: @support",
+        "AR": "اتصل بالدعم: @support",
+        "HI": "सहायता से संपर्क करें: @support",
+        "BN": "সমর্থনের সাথে যোগাযোগ করুন: @support",
     },
     "verify": {
         "EN": "Enter manager username in format @USERNAME:",
@@ -77,14 +78,15 @@ TEXTS = {
         "BN": "✅ এটি আমাদের অফিসিয়াল ম্যানেজার।",
     },
     "invalid": {
-        "EN": "⛔ This is not our manager. Contact @",
-        "RU": "⛔ Это не наш менеджер. Свяжитесь с @",
-        "AR": "⛔ هذا ليس مديرنا. اتصل بـ @",
-        "HI": "⛔ यह हमारा मैनेजर नहीं है। @ से संपर्क करें",
-        "BN": "⛔ এটি আমাদের ম্যানেজার নয়। যোগাযোগ করুন @",
+        "EN": "⛔ This is not our manager. Contact @support",
+        "RU": "⛔ Это не наш менеджер. Свяжитесь с @support",
+        "AR": "⛔ هذا ليس مديرنا. اتصل بـ @support",
+        "HI": "⛔ यह हमारा मैनेजर नहीं है। @support से संपर्क करें",
+        "BN": "⛔ এটি আমাদের ম্যানেজার নয়। যোগাযোগ করুন @support",
     }
 }
 
+# Список валидных менеджеров (пример)
 valid_managers = ["@NAME"]
 
 def get_lang(chat_id):
@@ -103,10 +105,12 @@ def start(msg):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     for code, name in LANGS.items():
         markup.add(name)
+    # Показываем приветствие на языке по-умолчанию (EN) — пользователь затем выберет язык
     bot.send_message(msg.chat.id, TEXTS["start"]["EN"], reply_markup=markup)
 
 @bot.message_handler(func=lambda m: m.text in LANGS.values())
 def set_language(msg):
+    # устанавливаем язык пользователя
     lang_code = [k for k, v in LANGS.items() if v == msg.text][0]
     user_language[msg.chat.id] = lang_code
     main_menu(msg.chat.id)
@@ -115,7 +119,7 @@ def set_language(msg):
 def menu_handler(msg):
     chat_id = msg.chat.id
     lang = get_lang(chat_id)
-    t = msg.text
+    t = msg.text or ""
 
     if "✅" in t:
         bot.send_message(chat_id, TEXTS["partner"][lang])
@@ -136,23 +140,18 @@ def menu_handler(msg):
     else:
         main_menu(chat_id)
 
-# Flask "keep-alive" для Render
-@app.route('/')
-def home():
-    return "Bot is running!"
+# Flask "keep-alive" для Render (эндпоинт здоровья)
+@app.route('/health')
+def health():
+    return "ok"
 
-import telebot.apihelper
-telebot.apihelper.SESSION_TIME_TO_LIVE = 5  # обновляем сессию каждые 5 сек
-
+# Запуск polling (только при запуске через python main.py)
 if __name__ == "__main__":
-    import time
-    print("✅ Бот запущен")
-
+    print("✅ Бот запускается (polling)...")
+    # Бесконечный цикл с авто-переподключением при ошибках сети
     while True:
         try:
             bot.infinity_polling(skip_pending=True, timeout=10, long_polling_timeout=5)
         except Exception as e:
-            print(f"⚠️ Ошибка соединения: {e}")
-            time.sleep(5)  # подождать 5 секунд и перезапустить polling
-
-
+            print(f"⚠️ Ошибка соединения: {e}. Переподключаемся через 5s...")
+            time.sleep(5)
