@@ -141,7 +141,18 @@ def menu_handler(msg):
 def home():
     return "Bot is running!"
 
+import telebot.apihelper
+telebot.apihelper.SESSION_TIME_TO_LIVE = 5  # обновляем сессию каждые 5 сек
+
 if __name__ == "__main__":
-    print("Бот запущен ✅")
-    bot.infinity_polling(skip_pending=True, timeout=10)
+    import time
+    print("✅ Бот запущен")
+
+    while True:
+        try:
+            bot.infinity_polling(skip_pending=True, timeout=10, long_polling_timeout=5)
+        except Exception as e:
+            print(f"⚠️ Ошибка соединения: {e}")
+            time.sleep(5)  # подождать 5 секунд и перезапустить polling
+
 
