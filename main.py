@@ -49,18 +49,18 @@ TEXTS = {
         "BN": "অনুগ্রহ করে একটি বিকল্প নির্বাচন করুন:",
     },
     "partner": {
-        "EN": -
-        "RU": -
-        "AR": -
-        "HI": -
-        "BN": -
+        "EN": -E
+        "RU": -R
+        "AR": -A
+        "HI": -H
+        "BN": -B
     },
     "support": {
-        "EN": 
-        "RU": 
-        "AR": 
-        "HI":
-        "BN": 
+        "EN": E
+        "RU": R
+        "AR": A
+        "HI":S
+        "BN": D
     },
     "verify": {
         "EN": "Enter manager username in format @USERNAME:",
