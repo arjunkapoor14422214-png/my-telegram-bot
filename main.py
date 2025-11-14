@@ -207,9 +207,6 @@ Telegram: @""",
 টেলিগ্রাম: @"""
     },
 
-
-    },
-
     "support": {
         "EN": "Support contacts:\n@ultrapari_Alex",
         "RU": "Контакты поддержки:\n@ultrapari_Alex",
