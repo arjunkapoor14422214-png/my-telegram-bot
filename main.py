@@ -152,11 +152,11 @@ Send this information to: @""",
 9. আপনার আইডি কার্ডের ছবি এবং একটি সেলফি সংযুক্ত করুন।
 আইডি কার্ড নম্বর:
 
-এই তথ্য পাঠান: @"""
+এই তথ্য পাঠান: @""",
     },
 
     "agent_mobcash": {
-        "EN": "Hello! Fill out the form to create MobCash account:
+        "EN": """Hello! Fill out the form to create MobCash account:
 1. Full name:
 2. Date of birth:
 3. ID card number:
@@ -164,10 +164,18 @@ Send this information to: @""",
 5. Attach photos of your ID card and a selfie.
 
 Then send your account ID to your manager or main manager.
-Telegram: @",
-        "RU": "ЗЗдравствуйте! Заполните форму для создания аккаунта MobCash:
+Telegram: @""",
+
+        "RU": """Здравствуйте! Заполните форму для создания аккаунта MobCash:
 1. ФИО:
 2. Дата рождения:
+3. Номер удостоверения личности:
+4. Текущее местоположение:
+5. Прикрепите фотографии удостоверения личности и селфи.
+
+Затем отправьте ID аккаунта вашему менеджеру или главному менеджеру.
+Telegram: @""",
+
 3. Номер удостоверения личности:
 4. Текущее местоположение:
 5. Прикрепите фотографии удостоверения личности и селфи.
