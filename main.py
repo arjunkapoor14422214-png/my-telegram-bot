@@ -211,6 +211,86 @@ Send this information to: @""",
 def health():
     return "ok"
 
+def get_lang(chat_id):
+    return user_language.get(chat_id, "EN")
+
+def main_menu(chat_id):
+    lang = get_lang(chat_id)
+
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.add(
+        "✅ " + ("Become Partner" if lang == "EN" else TEXTS["partner"][lang][:20] + "..."),
+        "💸 " + ("Be Payment Agent" if lang == "EN" else TEXTS["agent_choose"][lang])
+    )
+    markup.add(
+        "📞 " + ("Support" if lang == "EN" else TEXTS["support"][lang][:20] + "..."),
+        "🕵️ " + ("Verify Manager" if lang == "EN" else TEXTS["verify"][lang][:20] + "...")
+    )
+    markup.add("🌐 " + ("Change Language" if lang == "EN" else TEXTS["start"][lang][:20] + "..."))
+
+    bot.send_message(chat_id, TEXTS["menu"][lang], reply_markup=markup)
+
+@bot.message_handler(commands=['start'])
+def start(msg):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    for code, name in LANGS.items():
+        markup.add(name)
+    bot.send_message(msg.chat.id, TEXTS["start"]["EN"], reply_markup=markup)
+
+@bot.message_handler(func=lambda m: m.text in LANGS.values())
+def set_language(msg):
+    lang_code = [k for k, v in LANGS.items() if v == msg.text][0]
+    user_language[msg.chat.id] = lang_code
+    main_menu(msg.chat.id)
+
+@bot.message_handler(func=lambda m: True)
+def menu_handler(msg):
+    chat_id = msg.chat.id
+    lang = get_lang(chat_id)
+    t = msg.text
+
+    if t is None:
+        return
+
+    if "✅" in t:
+        bot.send_message(chat_id, TEXTS["partner"][lang])
+        return
+    if "💸" in t:
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        markup.add("🏦 Bank-transfer", "📱 MobCash")
+        markup.add("⬅️ Back")
+        bot.send_message(chat_id, TEXTS["agent_choose"][lang], reply_markup=markup)
+        return
+    if "📞" in t:
+        bot.send_message(chat_id, TEXTS["support"][lang])
+        return
+    if "🕵️" in t:
+        bot.send_message(chat_id, TEXTS["verify"][lang])
+        return
+    if "🌐" in t:
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        for code, name in LANGS.items():
+            markup.add(name)
+        bot.send_message(chat_id, TEXTS["start"][lang], reply_markup=markup)
+        return
+    if "🏦" in t:
+        bot.send_message(chat_id, TEXTS["agent_bank"][lang])
+        return
+    if "📱" in t:
+        bot.send_message(chat_id, TEXTS["agent_mobcash"][lang])
+        return
+    if "⬅️" in t:
+        main_menu(chat_id)
+        return
+    if t.startswith("@"):
+        valid_managers = ["@", "@", "@"]
+        if t in valid_managers:
+            bot.send_message(chat_id, TEXTS["valid"][lang])
+        else:
+            bot.send_message(chat_id, TEXTS["invalid"][lang])
+        main_menu(chat_id)
+        return
+
 # Запуск polling (только при запуске через python main.py)
 if __name__ == "__main__":
     print("✅ Бот запускается (polling)...")
