@@ -284,7 +284,7 @@ def menu_handler(msg):
         main_menu(chat_id)
         return
     if t.startswith("@"):
-        valid_managers = ["@", "@", "@"]
+        valid_managers = ["@ultrapari_Alex", "@", "@"]
         if t in valid_managers:
             bot.send_message(chat_id, TEXTS["valid"][lang])
         else:
